@@ -135,6 +135,10 @@ save_model.py:
   --info: print detailed info about tracked objects
     (default: False)
 ```
+ ## 명령어.
+  python object_tracker_gui_ver0.6.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
+
+
 
 ### References  
 
