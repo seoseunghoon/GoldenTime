@@ -2,20 +2,20 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE) #yolov4-deepsort
 
 ## 개발 이유
-&nbsp;판단력이 흐린 아이 및 보행자가 차량뒤에서 급히 뛰쳐나오는 경우, 운전자가 불법주정차로 인한 사각지대로 인해 보행자를 인식하지못한 경우  
- 사고로 이어지는 상황이 적지않음에 중점을 두고 해당 상황에 운전자, 보행자에게 경고 해주는 기능을 구현하여 사고를 예측, 방지하고자 함
+&nbsp;판단력이 흐린 아이 또는 보행자가 차량 뒤에서 급히 뛰쳐나오는 경우, 운전자가 불법주정차로 인한 사각지대로 인해 보행자를 인식하지 못한 경우  
+사고로 이어지는 상황이 적지 않음에 중점을 두고 해당 상황에 운전자, 보행자에게 경고해 주는 기능을 구현하여 사고를 예측, 방지하고자 함
 
 
 ## Description
-&nbsp;어린이 보호구역의 CCTV와 YOLO v4를 활용하여 차량과 사람을 인식, Deepsort를 활용하여 개별 ID를 부여한다.  
-사람과 차량의 충돌(접촉)이 일어나는 경우 위험 등급을 상향 시키고, 지속적인 충돌로 일정 위험등급에 도달한 경우 경고  
-(인식박스의 색이 빨간색으로 변하고 비프음 출력)하여 차량 뒤에서 뛰쳐나오는, 운전자가 인식하지 못한 사람의 사고율을 낮춘다.  
- AABB 충돌 알고리즘을 이용하여 YOLOv4로 인식된 bounding BOX 간 충돌, 그중에서도 차량과 사람간의 충돌만을 인식한다.  
-충돌의 정확성을 올리기 위해 기본 box의 크기를 일정확률로 줄이고, 차량 내 운전자는 충돌에서 제외하여 의미 없는 충돌을 배제한다.
+&nbsp;어린이 보호구역의 CCTV와 YOLO v4를 활용하여 차량과 사람을 인식, Deep sort를 활용하여 개별 ID를 부여한다.  
+사람과 차량의 충돌(접촉)이 일어나는 경우 위험 등급을 상향 시키고, 지속적인 충돌로 일정 위험 등급에 도달하였을 때 경고  
+(인식 박스의 색이 빨간색으로 변하고 비프음 출력)하여 차량 뒤에서 뛰쳐나오는, 운전자가 인식하지 못한 사람의 사고율을 낮춘다.  
+AABB 충돌 알고리즘을 이용하여 YOLOv4로 인식된 bounding BOX 간 충돌, 그중에서도 차량과 사람 간의 충돌만을 인식한다.  
+충돌의 정확성을 올리기 위해 기본 box의 크기를 일정 확률로 줄이고, 차량 내 운전자는 충돌에서 제외하여 의미 없는 충돌을 배제한다.
 
 ## Environment
-&nbsp;시작하려면 Anaconda 또는 Pip를 통해 적절한 종속성을 설치해야한다.  
-GPU를 사용하는 사람들에게는 CUDA 툴킷 버전을 구성하므로 Anaconda 경로를 권장.
+&nbsp;시작하려면 Anaconda 또는 Pip을 통해 적절한 종속성을 설치해야 한다.  
+GPU를 사용하는 사람들에게는 CUDA Toolkit 버전을 구성하므로 Anaconda 경로를 권장.
 
 ### Conda (Recommended)
 ```bash
@@ -24,8 +24,8 @@ conda env create -f conda-cpu.yml #conda 가상환경 생성
 conda activate yolov4-cpu         #conda 가상환경 실행
 
 # Tensorflow GPU
-conda env create -f conda-gpu.yml
-conda activate yolov4-gpu  
+conda env create -f conda-gpu.yml #conda 가상환경 생성
+conda activate yolov4-gpu         #conda 가상환경 실행
 ```
 
 ### Pip
