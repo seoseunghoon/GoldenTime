@@ -53,19 +53,19 @@ Our object tracker uses YOLOv4 to make the object detections, which deep sort th
 Download pre-trained yolov4.weights file: https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT
 
 ## 실행 명령어.
-  python object_tracker_gui_ver0.6.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
+  python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
 
 
 ## Running the Tracker with YOLOv4
 To implement the object tracking using YOLOv4, first we convert the .weights into the corresponding TensorFlow model which will be saved to a checkpoints folder. Then all we need to do is run the object_tracker.py script to run our object tracker with YOLOv4, DeepSort and TensorFlow.
-```bash
 
 # tensorflow 모델로 yolov4 weights 파일 변환.
-python save_model.py --model yolov4 
-
-
 
 ```bash
+python save_model.py --model yolov4 
+
+```bash
+
 save_model.py:
   --weights: path to weights file
     (default: './data/yolov4.weights')
