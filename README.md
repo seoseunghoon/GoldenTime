@@ -50,6 +50,7 @@ https://developer.nvidia.com/cuda-10.1-download-archive-update2
 
 ## YOLOv4 가중치파일
 트래커에 대해 사전 훈련된 YOLOv4 가중치: https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT
+다운 후 data폴더에 넣어준다.
 
 # tensorflow 모델로 yolov4 weights 파일 변환.
 YOLOv4를 사용하여 객체 추적을 구현하려면 먼저 save_model.py를 사용하여 .weights를 체크포인트 폴더에 저장될 해당 TensorFlow 모델로 변환해야한다.
@@ -64,7 +65,7 @@ python goldentime.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi -
 python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash #gui(pyqt5)
 ```
 ## 실행 영상
-<p align="center"><img src="test.mp4"\></p>
+<p align="center"><img src="test.gif"\></p>
 
 
 
