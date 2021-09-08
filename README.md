@@ -14,7 +14,7 @@
 충돌의 정확성을 올리기 위해 기본 box의 크기를 일정확률로 줄이고, 차량 내 운전자는 충돌에서 제외하여 의미 없는 충돌을 배제한다.
 
 ## Environment
-시작하려면 Anaconda 또는 Pip를 통해 적절한 종속성을 설치해야한다.  
+&nbsp;시작하려면 Anaconda 또는 Pip를 통해 적절한 종속성을 설치해야한다.  
 GPU를 사용하는 사람들에게는 CUDA 툴킷 버전을 구성하므로 Anaconda 경로를 권장.
 
 ### Conda (Recommended)
@@ -48,8 +48,8 @@ https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT
 다운 후 data폴더에 넣어준다.
 
 ## tensorflow 을 사용하기 위한 yolov4 weights 파일 변환.
-YOLOv4를 사용하여 객체 추적을 구현하려면 먼저 save_model.py를 사용하여 .weights를 체크포인트 폴더에 저장될 해당 TensorFlow 모델로 변환해야한다.  
-그런 다음 python goldentime_gui.py 스크립트를 실행하여 YOLOv4, DeepSort 및 TensorFlow로 객체 추적, 골든타임 gui실행
+&nbsp;YOLOv4를 사용하여 객체 추적을 구현하려면 먼저 save_model.py를 사용하여 .weights를 체크포인트 폴더에 저장될 해당 TensorFlow 모델로 변환해야한다.  
+그 후 python goldentime_gui.py 스크립트를 실행하여 YOLOv4, DeepSort 및 TensorFlow로 객체 추적, 골든타임 gui실행
 ```
 python save_model.py --model yolov4 
 ```
