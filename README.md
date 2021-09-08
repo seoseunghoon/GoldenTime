@@ -57,11 +57,11 @@ python save_model.py --model yolov4
 ## 실행 명령어.
 #only video
 ```bash
-python goldentime.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
+python goldentime.py --video ./1.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
 ```
 #gui(pyqt5)
 ```
-python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash 
+python goldentime_gui.py --video ./1.mp4 --output ./outputs/demo.avi --model yolov4 check_crash 
 ```
 ## 실행 영상 (goldentime_gui.py)
 <p align="center"><img src="test.gif"\></p>
