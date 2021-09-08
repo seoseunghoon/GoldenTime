@@ -35,7 +35,7 @@ conda activate yolov4-gpu
 
 
 ### Pip
-(TensorFlow 2 packages require a pip version >19.0.)
+(TensorFlow 2 packages require a pip version >19.0.) pip버전 19.0이상
 ```bash
 # TensorFlow CPU
 pip install -r requirements.txt
@@ -63,7 +63,9 @@ python save_model.py --model yolov4
 python goldentime.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
 python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash #gui(pyqt5)
 ```
-
+## 실행 영상
+bash
+https://user-images.githubusercontent.com/59131628/132486200-8f792d0c-428d-429f-9d9e-944c0447f905.mp4
 
 ```
 save_model.py:
@@ -80,7 +82,7 @@ save_model.py:
   --model: yolov3 or yolov4
     (default: yolov4)
     
- object_tracker.py:
+ goldentime.py:
   --video: path to input video (use 0 for webcam)
     (default: './data/video/test.mp4')
   --output: path to output video (remember to set right codec for given format. e.g. XVID for .avi)
@@ -111,7 +113,8 @@ save_model.py:
 
 
 ### References  
+  fork : [yolov4-deepsort](https://github.com/theAIGuysCode/yolov4-deepsort)
 
-   Huge shoutout goes to hunglc007 and nwojke for creating the backbones of this repository:
+  * 
   * [tensorflow-yolov4-tflite](https://github.com/hunglc007/tensorflow-yolov4-tflite)
   * [Deep SORT Repository](https://github.com/nwojke/deep_sort)
