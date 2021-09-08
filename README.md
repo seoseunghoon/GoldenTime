@@ -49,7 +49,7 @@ https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT
 
 ## tensorflow 을 사용하기 위한 yolov4 weights 파일 변환.
 &nbsp;YOLOv4를 사용하여 객체 추적을 구현하려면 먼저 save_model.py를 사용하여 .weights를 체크포인트 폴더에 저장될 해당 TensorFlow 모델로 변환해야한다.  
-그 후 python goldentime_gui.py 스크립트를 실행하여 YOLOv4, DeepSort 및 TensorFlow로 객체 추적, 골든타임 gui실행
+그 후 python goldentime_gui.py 스크립트를 실행하여 YOLOv4, DeepSort 및 TensorFlow로 객체 추적
 ```
 python save_model.py --model yolov4 
 ```
