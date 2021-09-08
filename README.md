@@ -45,7 +45,7 @@ pip install -r requirements-gpu.txt
 ```
 
 ### Nvidia Driver (For GPU, if you are not using Conda Environment and haven't set up CUDA yet)
-이 저장소에서 사용하는 TensorFlow 버전에 적합한 버전인 CUDA Toolkit 버전 10.1을 사용해야 한다.__
+이 저장소에서 사용하는 TensorFlow 버전에 적합한 버전인 CUDA Toolkit 버전 10.1을 사용해야 한다.  
 https://developer.nvidia.com/cuda-10.1-download-archive-update2
 
 ## YOLOv4 가중치파일
