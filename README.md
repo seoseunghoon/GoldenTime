@@ -7,7 +7,7 @@
 
 
 ## Description
-어린이 보호구역의 CCTV와 YOLO v4를 활용하여 차량과 사람을 인식, Deepsort를 활용하여 개별 ID를 부여한다.   
+어린이 보호구역의 CCTV와 YOLO v4를 활용하여 차량과 사람을 인식, Deepsort를 활용하여 개별 ID를 부여한다.  
 사람과 차량의 충돌(접촉)이 일어나는 경우 위험 등급을 상향 시키고, 지속적인 충돌로 일정 위험등급에 도달한 경우 경고  
 (인식박스의 색이 빨간색으로 변하고 비프음 출력)하여 차량 뒤에서 뛰쳐나오는, 운전자가 인식하지 못한 사람의 사고율을 낮춘다.  
  AABB 충돌 알고리즘을 이용하여 YOLOv4로 인식된 bounding BOX 간 충돌, 그중에서도 차량과 사람간의 충돌만을 인식한다.  
@@ -20,14 +20,13 @@ GPU를 사용하는 사람들에게는 CUDA 툴킷 버전을 구성하므로 Ana
 ### Conda (Recommended)
 ```bash
 # Tensorflow CPU
-conda env create -f conda-cpu.yml
-conda activate yolov4-cpu
+conda env create -f conda-cpu.yml #conda 가상환경 생성
+conda activate yolov4-cpu         #conda 가상환경 실행
 
 # Tensorflow GPU
 conda env create -f conda-gpu.yml
-conda activate yolov4-gpu
+conda activate yolov4-gpu  
 ```
-
 
 ### Pip
 (TensorFlow 2 packages require a pip version >19.0.) pip버전 19.0이상
@@ -43,12 +42,12 @@ pip install -r requirements-gpu.txt
 이 저장소에서 사용하는 TensorFlow 버전에 적합한 버전인 CUDA Toolkit 버전 10.1을 사용해야 한다.  
 https://developer.nvidia.com/cuda-10.1-download-archive-update2
 
-## YOLOv4 가중치파일
+## YOLOv4 weights파일
 트래커에 대해 사전 훈련된 YOLOv4 가중치:  
 https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT  
 다운 후 data폴더에 넣어준다.
 
-# tensorflow 모델로 yolov4 weights 파일 변환.
+# tensorflow 을 사용하기 위한 yolov4 weights 파일 변환.
 YOLOv4를 사용하여 객체 추적을 구현하려면 먼저 save_model.py를 사용하여 .weights를 체크포인트 폴더에 저장될 해당 TensorFlow 모델로 변환해야한다.  
 그런 다음 python goldentime_gui.py 스크립트를 실행하여 YOLOv4, DeepSort 및 TensorFlow로 객체 추적, 골든타임 gui실행
 ```
