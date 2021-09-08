@@ -47,7 +47,7 @@ https://developer.nvidia.com/cuda-10.1-download-archive-update2
 https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT  
 다운 후 data폴더에 넣어준다.
 
-# tensorflow 을 사용하기 위한 yolov4 weights 파일 변환.
+## tensorflow 을 사용하기 위한 yolov4 weights 파일 변환.
 YOLOv4를 사용하여 객체 추적을 구현하려면 먼저 save_model.py를 사용하여 .weights를 체크포인트 폴더에 저장될 해당 TensorFlow 모델로 변환해야한다.  
 그런 다음 python goldentime_gui.py 스크립트를 실행하여 YOLOv4, DeepSort 및 TensorFlow로 객체 추적, 골든타임 gui실행
 ```
