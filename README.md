@@ -66,7 +66,7 @@ python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.a
 ## 실행 영상 (goldentime_gui.py)
 <p align="center"><img src="test.gif"\></p>
 
-##향후연구
+## 향후연구
  아두이노와 LED를 활용해 보행자와 운전자에게 직접 경고
 
 ## Command Line Args Reference
