@@ -60,7 +60,7 @@ python goldentime.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi -
 
 python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash #gui(pyqt5)
 ```
-## 실행 영상
+## 실행 영상 (goldentime_gui.py)
 <p align="center"><img src="test.gif"\></p>
 
 
