@@ -64,9 +64,11 @@ python goldentime.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi -
 python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash #gui(pyqt5)
 ```
 ## 실행 영상
-bash
-https://user-images.githubusercontent.com/59131628/132486200-8f792d0c-428d-429f-9d9e-944c0447f905.mp4
+<p align="center"><img src="data/helpers/test.gif"\></p>
 
+
+
+## Command Line Args Reference
 ```
 save_model.py:
   --weights: path to weights file
@@ -107,7 +109,8 @@ save_model.py:
     (default: False)
   --info: print detailed info about tracked objects
     (default: False)
-  --check_crash: check
+  --check_crash: check object box crash
+    (default: True)
 ```
 
 
