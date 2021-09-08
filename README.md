@@ -1,14 +1,19 @@
-# yolov4-deepsort
+# GoldenTime
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1zmeSTP3J5zu2d5fHgsQC06DyYEYJFXq1?usp=sharing)
 
-Object tracking implemented with YOLOv4, DeepSort, and TensorFlow. YOLOv4 is a state of the art algorithm that uses deep convolutional neural networks to perform object detections. We can take the output of YOLOv4 feed these object detections into Deep SORT (Simple Online and Realtime Tracking with a Deep Association Metric) in order to create a highly accurate object tracker.
-
-## Demo of Object Tracker on Persons
-<p align="center"><img src="data/helpers/demo.gif"\></p>
-
-## Demo of Object Tracker on Cars
-<p align="center"><img src="data/helpers/cars.gif"\></p>
+## 개발 이유
+2019년 9월 충남 아산 어린이 교통사고 사망사건을 계기로 소위
+민식이 법이라고 불리는 법안이 발의되었다. 이를 필두로 
+어린이 보호구역에서의 안전을 위한 여러 법안들이 발의되었다.
+어린이 보호구역 내 시속30km이하 주행, 신호등과 과속단속카메라
+설치 의무화 등 어린이 보호구역 내 사고를 줄이기 위한 노력이
+이어지고 있다.
+이러한 노력에도 어린이 보호구역 내 교통사고는 꾸준히 발생하고 
+있다. 판단력이 흐린 아이들이 차량뒤에서 급히 뛰쳐나오는 경우가
+발생하여 사고로 이어지는 상황에 중점을 두고 어린이 보호구역 내의 
+CCTV를 활용하여 사람이 차량과 접촉하는 경우 위험등급을
+부여하고 일정 등급에 도달 시, 경고 해주는 기능을 구현하여
+사고를 예측, 방지하고자 한다.
 
 ## Getting Started
 To get started, install the proper dependencies either via Anaconda or Pip. I recommend Anaconda route for people using a GPU as it configures CUDA toolkit version for you.
