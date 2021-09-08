@@ -49,7 +49,8 @@ pip install -r requirements-gpu.txt
 https://developer.nvidia.com/cuda-10.1-download-archive-update2
 
 ## YOLOv4 가중치파일
-트래커에 대해 사전 훈련된 YOLOv4 가중치: https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT
+트래커에 대해 사전 훈련된 YOLOv4 가중치: 
+https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT
 다운 후 data폴더에 넣어준다.
 
 # tensorflow 모델로 yolov4 weights 파일 변환.
