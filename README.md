@@ -52,20 +52,19 @@ https://developer.nvidia.com/cuda-10.1-download-archive-update2
 Our object tracker uses YOLOv4 to make the object detections, which deep sort then uses to track. There exists an official pre-trained YOLOv4 object detector model that is able to detect 80 classes. For easy demo purposes we will use the pre-trained weights for our tracker.
 Download pre-trained yolov4.weights file: https://drive.google.com/open?id=1cewMfusmPjYWbrnuJRuKhPMwRe_b9PaT
 
-## 실행 명령어.
-  python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
-
-
-## Running the Tracker with YOLOv4
-To implement the object tracking using YOLOv4, first we convert the .weights into the corresponding TensorFlow model which will be saved to a checkpoints folder. Then all we need to do is run the object_tracker.py script to run our object tracker with YOLOv4, DeepSort and TensorFlow.
-
 # tensorflow 모델로 yolov4 weights 파일 변환.
+YOLOv4를 사용하여 객체 추적을 구현하려면 먼저 .weights를 체크포인트 폴더에 저장될 해당 TensorFlow 모델로 변환해야한다.
+그런 다음 object_tracker.py 스크립트를 실행하여 YOLOv4, DeepSort 및 TensorFlow로 객체 추적기를 실행
+ python save_model.py --model yolov4 
 
-```bash
-python save_model.py --model yolov4 
 
-```bash
+## 실행 명령어.
+  python goldentime.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
+  python goldentime_gui.py --video ./data/video/cars.mp4 --output ./outputs/demo.avi --model yolov4 check_crash #gui(pyqt5)
 
+
+
+```
 save_model.py:
   --weights: path to weights file
     (default: './data/yolov4.weights')
