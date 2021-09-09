@@ -52,7 +52,7 @@ flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
 flags.DEFINE_boolean('check_crash', True, 'check object box crash')
-flags.DEFINE_boolean('run_video', False, 'check object box crash')
+flags.DEFINE_boolean('run_video', False, 'run')
 
 class Example(QWidget):
     # Definition of the parameters
@@ -136,8 +136,8 @@ class Example(QWidget):
         
         try:
             self.cpt= cv2.VideoCapture(int(self.video_path))
+            #cam사용.
             #self.cpt = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-            #self.cpt= cv2.VideoCapture(0)
         except:
             self.cpt = cv2.VideoCapture(self.video_path)
         
@@ -180,24 +180,20 @@ class Example(QWidget):
         
         self.btn_on2 = QPushButton("영상 출력",self)
         self.btn_on2.resize(390,50)
-        #self.btn_on2.resize(200,50)
         self.btn_on2.move(10,10+500+5)
         self.btn_on2.setStyleSheet("background-color:#C8C8C8;"  "font-weight: bold;")
-        #self.btn_off.setStyleSheet("background-color:#8FFFF7;"  "font-weight: bold;")
         self.btn_on2.clicked.connect(self.start)
 
         self.btn_off = QPushButton("중지",self)
         self.btn_off.resize(395,50)
         self.btn_off.move(20+100+5+100+5+185,10+500+5)
         self.btn_off.setStyleSheet("background-color:#C8C8C8;"  "font-weight: bold;")
-        #self.btn_off.setStyleSheet("background-color:#8FFFF7;"  "font-weight: bold;")
         self.btn_off.clicked.connect(self.stop)
 
         
         self.msg=QLabel(self)
         self.msg.setText("사람 : %d   차: %d  " % (self.human_c, self.car_c))
         self.msg.resize(400,40)
-        #self.msg.move(10+100+5+100+5+100+15+100+15+15,10+500+15)
         self.msg.move(10,10)
         self.msg.setFont(QFont("맑은 고딕",20,QFont.Bold))
         self.msg.setStyleSheet("Color : Blue")
@@ -215,9 +211,9 @@ class Example(QWidget):
 
 
     def start(self):
-        for n in range(6) :
-            self.human_table.append([])
-        FLAGS.run_video = False
+        for n in range(6) : #위험등급 5까지제한.
+            self.human_table.append([]) 
+        FLAGS.run_video = False #정지변수
         while True:
             return_value, frame = self.cpt.read()
             if return_value:
@@ -226,6 +222,7 @@ class Example(QWidget):
             else:
                 print('Video has ended or failed, try a different video format!')
                 break
+            #객체 카운팅 변수
             self.human_c = 0
             self.car_c = 0
             
@@ -254,6 +251,7 @@ class Example(QWidget):
                     boxes = value[:, :, 0:4]
                     pred_conf = value[:, :, 4:]
 
+            #NMS(Non Maxmimum Suppressions)
             boxes, scores, classes, valid_detections = tf.image.combined_non_max_suppression(
                 boxes=tf.reshape(boxes, (tf.shape(boxes)[0], -1, 1, 4)),
                 scores=tf.reshape(
@@ -288,6 +286,7 @@ class Example(QWidget):
             #allowed_classes = list(class_names.values())
             
             # custom allowed classes (uncomment line below to customize tracker for only people)
+            # 인식 class
             allowed_classes = ['person','car', 'bus', 'truck']
 
             # loop through objects and use class index to get class name, allow only classes in allowed_classes list
@@ -305,9 +304,7 @@ class Example(QWidget):
                     names.append(class_name)
             names = np.array(names)
             count = len(names)
-            if FLAGS.count:
-                cv2.putText(frame, "Objects being tracked: {}".format(count), (5, 35), cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 255, 0), 2)
-                print("Objects being tracked: {}".format(count))
+            
             # delete detections that are not in allowed_classes
             bboxes = np.delete(bboxes, deleted_indx, axis=0)
             scores = np.delete(scores, deleted_indx, axis=0)
@@ -337,15 +334,15 @@ class Example(QWidget):
             # update tracks
             for track in self.tracker.tracks:
                 if not track.is_confirmed() or track.time_since_update > 1:
-                    continue 
+                    continue
                 bbox = track.to_tlbr()
                 class_name = track.get_class()
                 global car_id
                 global human_id
                 global grade
                 global per
-                #크기축소.
-                per = 100 #%로 축소.
+                #박스 크기축소.
+                per = 90 #%로 축소.
                 w = int(bbox[2])-int(bbox[0])
                 h = int(bbox[3])-int(bbox[1])
                 control_size_x = w*0.5 * (1-(per*0.01))
@@ -366,12 +363,10 @@ class Example(QWidget):
                     
                     if class_name == str("person") :
                         self.human_c += 1
-                        #사람 위험도 테이블에 추가 #중복제외 필요. #아이디가 없으면 추가. #첫추가는 무조건.
+                        #사람 위험도 테이블에 추가, 중복(아이디가 table에 존재하는 경우)제외
                         for i in self.human_table :
                             
                             for j in i:
-                                
-                                
                                 if j == str(track.track_id) :
                                     flag_overlap = False
                                     
@@ -382,59 +377,45 @@ class Example(QWidget):
                         n += 1 #몇번째 사람.
                         
                         if len(car_table)>1 :
-                            #track.track_id를 다른곳에 저장을 시켜야.
-                            #궁금한점. 한번 id지정후에 계속 실행을 했을때, id가 다시 사용되는지,아이디가 어디까지진행되는지.
-                            #id는 +1되면서 새로운 인물추적시작.
-                            #개별 human_table만들어서 관리를 한다.
-                            #human_table은 프레임이 끝나도 지속.
-                            #list에서 같은 id를 찾고, 다음을 참고하여, 위험성체크.
-                            #첫 발견할때 딕셔너리 추가 - 중복확인.
+                            #human_table 2차원 리스트, 저장 위치로 id구별
+                            #human_table은 프레임이 끝나도 유지
+                            #list에서 같은 id를 찾고, 위험성체크.
 
-                        
                             for h in range(0,len(car_table)-1,2):
                                 bbox_temp = list()
                                 bbox_temp.append(car_table[h+1][0])
                                 bbox_temp.append(car_table[h+1][1])
                                 bbox_temp.append(car_table[h+1][2])
                                 bbox_temp.append(car_table[h+1][3])
-                                #차안 사람 제외
+                                #차안 사람 충돌 제외
                                 if bbox[0]>= bbox_temp[0] and bbox[2]<= bbox_temp[2] and bbox[1]>= bbox_temp[1] and bbox[3]<= bbox_temp[3]:
-                                    print("", end='')
-
+                                    pass
                                 #충돌확인
                                 elif bbox[2] >= bbox_temp[0] and bbox[0] <= bbox_temp[2] and bbox[3] >= bbox_temp[1] and bbox[1] <= bbox_temp[3]:
-                                    print(track.track_id,'번 째 사람 ',car_table[h] ,'차량과 충돌')
-                                    #충돌할때마다. 위험등급을 늘려서 human_table 저장시켜준다.
-                                    #위험등급이몇인지 체크
+                                    #print(track.track_id,'번 째 사람 ',car_table[h] ,'차량과 충돌')
+                                    #충돌, 위험등급 증가, human_table 재저장
+                                    #위험등급이 체크
                                     dangerous_grade = 0
                                     
                                 
-                                    for a in range(len(self.human_table)): #숫자 : 최대 위험등급
+                                    for a in range(len(self.human_table)): #최대 위험등급
                                         for b in self.human_table[a]:
                                             if  b == str(track.track_id):
                                                 if a>3 :
                                                     dangerous_grade = a
                                                     color = 0xFF0000 #위험등급 도달한경우 박스 색깔 변경.
-                                                    self.beepsound()
-                                                    print('위험인물 식별. 확인바람.') # 경고를 해주고, 등급을 올리지않는다.
+                                                    self.beepsound() #beep음
+                                                    print('위험인물 식별. 확인바람.')
                                                     
                                                 else :
                                                     dangerous_grade = a
                                                     
-                                                    
-                                                    #위험등급 업.
-                                    
-                                    #충돌은 한상태. 등급업
+                                    #등급업
                                     if dangerous_grade <4 :
-                                        
-                                        print(self.human_table)
-                                        
-                                        #if track.track_id in self.human_table:
-                                        
+                                        #print(self.human_table)
                                         del self.human_table[dangerous_grade][self.human_table[dangerous_grade].index(str(track.track_id))]#자기자신 삭제
-                                        
-                                        self.human_table[dangerous_grade+1].append(str(track.track_id))   #+=1 이거도 중복없게.
-                                        
+                                        self.human_table[dangerous_grade+1].append(str(track.track_id))   #다음 등급에 추가.
+    
                                     car_id = str(car_table[h])
                                     human_id = str(track.track_id)
                                     grade = str(dangerous_grade+1)
@@ -445,17 +426,16 @@ class Example(QWidget):
 
                 
             # draw bbox on screen
-                #박스크기 조정 테스트
                 
                 #위험 객체 굵기 강조.
                 if color == 0xFF0000 :
                     cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 4)
                 else :
                     cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
-                #cv2.rectangle(frame, (int(bbox[0]) + int(control_size_x), int(bbox[1])+ int(control_size_y)), (int(bbox[2])- int(control_size_x), int(bbox[3])- int(control_size_y)), color, 2)
                 cv2.rectangle(frame, (int(bbox[0]), int(bbox[1]-30)), (int(bbox[0])+(len(class_name)+len(str(track.track_id)))*17, int(bbox[1])), color, -1)
-                #cv2.rectangle(frame, (int(bbox[0]) + int(control_size_x), int(bbox[1]-30)+ int(control_size_y)), (int(bbox[0])+(len(class_name)+len(str(track.track_id)))*17- int(control_size_x), int(bbox[1])- int(control_size_y)), color, -1)
                 cv2.putText(frame, class_name + "-" + str(track.track_id),(int(bbox[0]), int(bbox[1]-10)),0, 0.75, (255,255,255),2)
+                #cv2.rectangle(frame, (int(bbox[0]) + int(control_size_x), int(bbox[1])+ int(control_size_y)), (int(bbox[2])- int(control_size_x), int(bbox[3])- int(control_size_y)), color, 2)
+                #cv2.rectangle(frame, (int(bbox[0]) + int(control_size_x), int(bbox[1]-30)+ int(control_size_y)), (int(bbox[0])+(len(class_name)+len(str(track.track_id)))*17- int(control_size_x), int(bbox[1])- int(control_size_y)), color, -1)
                 
             # if enable info flag then print details about each track
                 if FLAGS.info:
@@ -463,7 +443,7 @@ class Example(QWidget):
                 check_num += 1
                 #
                 
-            #다음프레임 car_table 초기화
+            #nextFrame car_table 초기화
             car_table.clear()
             # calculate frames per second of running detections
             fps = 1.0 / (time.time() - start_time)
@@ -504,9 +484,7 @@ class Example(QWidget):
             
     def stop(self):
         #self.prt.setText("대기 중입니다.")
-        #self.prt.setStyleSheet("Color : Green")
         self.frame.setPixmap(QPixmap.fromImage(QImage()))
-        #self.frame.setPixmap(self.icon)
         FLAGS.run_video = True
 
     #테이블 추가.
@@ -515,7 +493,6 @@ class Example(QWidget):
         self.table.insertRow(rowPosition)
         t=time.localtime()
 
-        
         self.table.setItem(rowPosition , 0, QTableWidgetItem("{}-{}-{}".format(t.tm_year, t.tm_mon, t.tm_mday)))
         self.table.setItem(rowPosition , 1, QTableWidgetItem("{}:{}:{}".format(t.tm_hour,t.tm_min,t.tm_sec)))
         self.table.setItem(rowPosition , 2, QTableWidgetItem(car_id))
@@ -525,8 +502,6 @@ class Example(QWidget):
         detail=""
 
         #충돌 테이블 색깔.
-        #palette = QPalette()
-        #palette.setColor(QPalette.Base, QColor(255, 0, 0))
         if int(grade) > 4 :
             for c in range(5):
                 myitem = self.table.item(rowPosition,c)
