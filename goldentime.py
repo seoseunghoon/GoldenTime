@@ -67,8 +67,7 @@ def main(_argv):
         interpreter.allocate_tensors()
         input_details = interpreter.get_input_details()
         output_details = interpreter.get_output_details()
-        print(input_details)
-        print(output_details)
+
     # otherwise load standard tensorflow saved model
     else:
         saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
@@ -91,7 +90,9 @@ def main(_argv):
         codec = cv2.VideoWriter_fourcc(*FLAGS.output_format)
         out = cv2.VideoWriter(FLAGS.output, codec, fps, (width, height))
 
-    
+    for n in range(6) : #위험등급 5까지
+            human_table.append([]) 
+
     frame_num = 0
     # while video is running
     while True:
@@ -160,10 +161,10 @@ def main(_argv):
         class_names = utils.read_class_names(cfg.YOLO.CLASSES)
 
         # by default allow all classes in .names file
-        allowed_classes = list(class_names.values())
+        #allowed_classes = list(class_names.values())
         
         # custom allowed classes (uncomment line below to customize tracker for only people)
-        #allowed_classes = ['person','car']
+        allowed_classes = ['person','car', 'bus', 'truck']
 
         # loop through objects and use class index to get class name, allow only classes in allowed_classes list
         names = []
@@ -203,10 +204,7 @@ def main(_argv):
         detections = [detections[i] for i in indices]       
 
         #
-        #print(scores)
-        #print(scores[0])
-        #print("classes"+ classes)
-        #print(boxs)
+
         # Call the tracker
         tracker.predict()
         tracker.update(detections)
@@ -220,38 +218,37 @@ def main(_argv):
             bbox = track.to_tlbr()
             class_name = track.get_class()
             
+            per = 90 #%로 축소.
+            w = int(bbox[2])-int(bbox[0])
+            h = int(bbox[3])-int(bbox[1])
+            control_size_x = w*0.5 * (1-(per*0.01))
+            control_size_y = h*0.5 * (1-(per*0.01))
+            bbox[0] += control_size_x
+            bbox[1] += control_size_y
+            bbox[2] -= control_size_x
+            bbox[3] -= control_size_y
+            color = colors[int(track.track_id) % len(colors)]
+            color = [i * 255 for i in color]
+            
             flag_overlap = True
             if FLAGS.check_crash:
-                if class_name == str("car") :
+                if class_name == str("car") or class_name == str("bus") or  class_name == str("truck"):
                     car_table.append(str(track.track_id))
                     car_table.append(bbox)
   
                   
                 if class_name == str("person") :
-                    #사람 위험도 테이블에 추가 #중복제외 필요. #아이디가 없으면 추가. #첫추가는 무조건.
-                    for i in human_table[0] :
-                        if i == str(track.track_id) :
-                            flag_overlap = False
+                    for i in human_table :
+                        for j in i:
+                                if j == str(track.track_id) :
+                                    flag_overlap = False
+    
                     if flag_overlap:
                         human_table[0].append(str(track.track_id))    
-                    print(human_table[0])
-                    
-                    #if x==car_table.get(id+track.track.id,x):#일치하는 id가 없으면 x리턴
-                    #    car_table[id+track.track.id] = 0
+        
 
-                    n += 1 #몇번째 사람.
                     
-                    if len(car_table)>2 :
-                        #track.track_id를 다른곳에 저장을 시켜야.
-                        #궁금한점. 한번 id지정후에 계속 실행을 했을때, id가 다시 사용되는지,아이디가 어디까지진행되는지.
-                        #id는 +1되면서 새로운 인물추적시작.
-                        #1. 데이터베이스로 참조.
-                        #2. track에 속성을 추가해서 위험관리를 시킨다.
-                        #3. 개별 human_table(hash형태)만들어서 관리를 한다.
-                        #       human_table은 프레임이 끝나도 지속.
-                        #       list에서 같은 id를 찾고, 다음을 참고하여, 위험성체크.
-                        #   첫 발견할때 딕셔너리 추가하는건 맞는데, 매번추가할수는 없으니 있나확인하고 없으면 추가.
-                        #   id가 그냥 숫자라서 검색할때 겹칠수있음. id1
+                    if len(car_table)>1 :
 
                     
                         for h in range(0,len(car_table)-1,2):
@@ -262,65 +259,33 @@ def main(_argv):
                             bbox_temp.append(car_table[h+1][3])
                             #차안 사람 제외
                             if bbox[0]>= bbox_temp[0] and bbox[2]<= bbox_temp[2] and bbox[1]>= bbox_temp[1] and bbox[3]<= bbox_temp[3]:
-                                print('차량안의 사람 제거')
+                                pass
                             #충돌확인
                             elif bbox[2] >= bbox_temp[0] and bbox[0] <= bbox_temp[2] and bbox[3] >= bbox_temp[1] and bbox[1] <= bbox_temp[3]:
-                                print(n,'번 째 사람 ',car_table[h] ,'차량과 충돌')
-                                #충돌할때마다. 위험등급을 늘려서 human_table 저장시켜준다.
                                 #위험등급이몇인지 체크
                                 dangerous_grade = 0
                                 for a in range(len(human_table)): #숫자 : 최대 위험등급.
                                     for b in human_table[a]:
-                                        if  b == track.track_id:
-                                            if a==4 :
+                                        if  b == str(track.track_id):
+                                            if a>3 :
+                                                dangerous_grade = a
+                                                color = 0xFF0000 #위험등급 도달한경우 박스 색깔 변경.
                                                 print('위험인물 식별. 확인바람.') # 경고를 해주고, 등급을 올리지않는다.
                                             else :
                                                 dangerous_grade = a
-                                                #위험등급 업.
 
                                 #충돌은 한상태. 등급업
                                 if dangerous_grade <4 :               
-                                    del human_table[[dangerous_grade].index(track.track_id)]#자기자신 삭제
-                                    human_table[dangerous_grade+1].append(track.track_id)   #+=1
-                                    print('등급업')
+                                    del human_table[dangerous_grade][human_table[dangerous_grade].index(str(track.track_id))]#자기자신 삭제
+                                    human_table[dangerous_grade+1].append(str(track.track_id))   #+=1
+          
                                                     
             
-            
-            #0829
-            #충돌 테스트.
-            #print(check_num)
-            
-            #if class_name == str("person") :
-
-                #print("%s",track[0].get_class())
-                
-                #밑 코드는 자신번호 -1의 객체와 비교.
-                #num_temp = check_num
-                #if num_temp > 0:s
-                #   num_temp -= 1
-                #  class_name_temp = track[num_temp].get_class()
-                #   bbox_temp = track[--num_temp].to_tlbr()
-                #    x1,y1, x2,y2: bbox[0],bbox[1],bbox[2],bbox[3]
-                #                   bbox_temp[0],bbox_temp[1],bbox_temp[2],bbox_temp[3]
-                #   if x1 + w1 >= x2 and x1 <= x2 + w2 and y1 + h1 >= y2 and y1 <= y2 + h2:
-                #   if bbox[2] >= bbox_temp[0] and bbox[0] <= bbox_temp[2] and bbox[3] >= bbox_temp[1] and bbox[1] <= bbox_temp[3]:
-                #       print("충돌")
-                #   else:
-                #       print("미충돌")
-                #차인경우만 비교 if class_name_temp == str("car") :
-                # 
-
+       
             
         # draw bbox on screen
-            #박스크기 조정 테스트
-            per = 80 #50%로 축소.
-            w = int(bbox[2])-int(bbox[0])
-            h = int(bbox[3])-int(bbox[1])
-            control_size_x = w*0.5 * (1-(per*0.01))
-            control_size_y = h*0.5 * (1-(per*0.01))
             #테스트
-            color = colors[int(track.track_id) % len(colors)]
-            color = [i * 255 for i in color]
+            
             #cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
             cv2.rectangle(frame, (int(bbox[0]) + int(control_size_x), int(bbox[1])+ int(control_size_y)), (int(bbox[2])- int(control_size_x), int(bbox[3])- int(control_size_y)), color, 2)
             cv2.rectangle(frame, (int(bbox[0]), int(bbox[1]-30)), (int(bbox[0])+(len(class_name)+len(str(track.track_id)))*17, int(bbox[1])), color, -1)
