@@ -119,6 +119,6 @@ save_model.py:
 
 ### References  
   fork : [yolov4-deepsort](https://github.com/theAIGuysCode/yolov4-deepsort)
-  * [AlexeyAB/darknet](https://github.com/AlexeyAB/darknet)
+  * [darknet](https://github.com/AlexeyAB/darknet)
   * [tensorflow-yolov4-tflite](https://github.com/hunglc007/tensorflow-yolov4-tflite)
   * [Deep SORT Repository](https://github.com/nwojke/deep_sort)
