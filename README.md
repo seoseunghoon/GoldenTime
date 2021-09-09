@@ -67,7 +67,8 @@ python goldentime_gui.py --video ./1.mp4 --output ./outputs/demo.avi --model yol
 <p align="center"><img src="test.gif"\></p>
 
 ## 향후연구
- 아두이노와 LED를 활용해 보행자와 운전자에게 직접 경고
+ 아두이노와 LED를 활용해 보행자와 운전자에게 직접 경고  
+ Custom Data Set (인식률 향상)
 
 ## Command Line Args Reference
 ```
