@@ -65,6 +65,7 @@ python goldentime_gui.py --video ./1.mp4 --output ./outputs/demo.avi --model yol
 ```
 ## 실행 영상 (goldentime_gui.py)
 <p align="center"><img src="test.gif"\></p>
+https://youtu.be/GoWZ41L5eAY
 
 ## 향후연구
  아두이노와 LED를 활용해 보행자와 운전자에게 직접 경고  
