@@ -59,9 +59,10 @@ python save_model.py --model yolov4
 ```bash
 python goldentime.py --video ./1.mp4 --output ./outputs/demo.avi --model yolov4 check_crash
 ```
-#gui(pyqt5)
+#gui(pyqt5) test
 ```
 python goldentime_gui.py --video ./1.mp4 --output ./outputs/demo.avi --model yolov4 check_crash 
+python goldentime_gui.py --video 0 --output ./outputs/demo.avi --model yolov4 check_crash 
 ```
 ## 실행 영상 (goldentime_gui.py)
 <p align="center"><img src="test.gif"\></p>
